@@ -1,24 +1,30 @@
 import logo from './logo.svg';
+import UseInputHooks from './UseInputHooks';
 import './App.css';
 
-function App() {
+function App({ onNewColor = f => f }) {
+  const [titleProps, resetTitle] = UseInputHooks("");
+  const [colorProps, resetColor] = UseInputHooks("#000000");
+  const submit = event => {
+    event.preventDefault();
+    onNewColor(titleProps.value, colorProps.value);
+    resetTitle();
+    resetColor();
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+      <form onSubmit={submit}>
+        <input
+          {...titleProps}
+          type="text"
+          placeholder="color title..."
+          required
+        />
+        <input {...colorProps} type="color" required />
+        <button>ADD</button>
+      </form>    </div>
   );
 }
 
